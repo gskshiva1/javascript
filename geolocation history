@@ -1,0 +1,107 @@
+// ==UserScript==
+// @name            Job History
+// @description     Add Job History and Job Data into PhoneTool
+// @author          ekarulf@
+// @namespace       https://w.amazon.com/index.php/EnvImprovementNinjas/JobHistory
+// @version         20230920
+// @match           https://phonetool.amazon.com/people/*
+// @match           https://phonetool.amazon.com/users/*
+// @match           https://connect.amazon.com/people/*
+// @match           https://connect.amazon.com/users/*
+// @match           https://admindirectory.corp.amazon.com/users/*
+// @match           https://admindirectory.corp.amazon.com/people/*
+// @require         https://m.media-amazon.com/images/I/41aUf1WGWNL./handlebars.runtime_with_templates.min-v4.7.7.js#sha256=480441feaaf3810569c4f629d9bdca7ca10975fd30f53a7a3a1ae4cb04c3187d
+// @require         https://m.media-amazon.com/images/I/61BHMfGpmbL./jquery-1.12.4.min.js#sha256=668b046d12db350ccba6728890476b3efee53b2f42dbb84743e5e9f1ae0cc404
+// ==/UserScript==
+// Note: The version string must be formatted YYYYMMDD to help Greasemonkey's version comparison logic
+
+(function($, Handlebars) {
+    'use strict';
+
+    var fetchJobData = function(user) {
+        return $.ajax({
+            method: "GET",
+            url: 'https://phonetool.amazon.com/users/' + user + '.json',
+            xhrFields: {
+                withCredentials: true
+            },
+            dataType: 'json'
+        });
+    };
+
+    var fetchJobHistory = function(user) {
+        return $.ajax({
+            method: "GET",
+            url: 'https://ekarulf.corp.amazon.com/cors/job-history/',
+            data: {
+                login: user
+            },
+            xhrFields: {
+                withCredentials: true
+            },
+            dataType: 'json'
+        });
+    };
+
+    var renderJobHistory = function(jobHistory) {
+        var template = Handlebars.templates["job-history.html"];
+        var viewModel = {};
+
+        if ($.isArray(jobHistory) && jobHistory.length > 0) {
+            viewModel.history = jobHistory;
+        }
+
+        return template(viewModel);
+    };
+
+    var renderJobData = function(jobData) {
+        var template = Handlebars.templates["job-data.html"];
+        var viewModel = {};
+
+        if (typeof jobData.job_level === 'number') {
+            viewModel.job_level = jobData.job_level;
+        }
+
+        if (typeof jobData.total_tenure_formatted === 'string') {
+            viewModel.total_tenure_formatted = jobData.total_tenure_formatted;
+        }
+
+        return template(viewModel);
+    };
+
+    var initialized = false;
+    var init = function(user) {
+        if (initialized || !user) {
+            return;
+        }
+
+        // Future init() invocations are no-ops
+        initialized = true;
+
+        $.when(fetchJobHistory(user)).done(function(jobHistory) {
+            // Insert Job History after org chart in DOM
+            var jobHistoryHtml = renderJobHistory(jobHistory);
+            $('.well.org-chart').after(jobHistoryHtml);
+        });
+
+        $.when(fetchJobData(user)).done(function(jobData) {
+            // Insert job data after employee id
+            var jobDataHtml = renderJobData(jobData);
+            $('.UserDetailsTable').append(jobDataHtml);
+        });
+    }
+
+    // Invoke Job History using global variable from PhoneTool HTML
+    if (unsafeWindow && unsafeWindow.PhoneTool && unsafeWindow.PhoneTool.targetUserLogin) {
+        init(unsafeWindow.PhoneTool.targetUserLogin);
+    }
+
+    // Fallback 1: Use the .login class
+    // This may not work if the browsing Amazonian has disabled displaying login
+    init($('.login').text().trim());
+
+    // Fallback 2: Fetch the target employee's login from the URL path
+    (function(path) {
+        init(path.substring(path.lastIndexOf('/')+1, path.length));
+    })(document.location.pathname);
+}(jQuery.noConflict(true), Handlebars));
