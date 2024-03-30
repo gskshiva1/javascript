@@ -1,0 +1,283 @@
+// ==UserScript==
+// @name         OUTLIERS autoselect UTL, NAK, NA
+// @author       ramakyan - Ramakrishna Yanamadala
+// @namespace    http://tampermonkey.net/
+// @version      1.0
+// @description  Auto select UTL, NAK, NA
+// @match        https://na.geostudio.last-mile.amazon.dev/*
+// @match        https://eu.geostudio.last-mile.amazon.dev/*
+// @match        https://fe.geostudio.last-mile.amazon.dev/*
+// ==/UserScript==
+
+(function() {
+    var radButton1 = document.createElement("button");
+    radButton1.innerHTML = "UTL";
+    radButton1.setAttribute('style', 'position: absolute; z-index: 2500; padding: 2px; left: 97%; top:29%; background-color: #CCCCCC; color: #000000; border: 4px solid #CCCCCC; border-radius: 8px; font-size: 14px; font-family: "Amazon Ember"; font-weight: bold; transition: background-color 0.3s, border-color 0.3s;');
+
+    radButton1.addEventListener('click', function() {
+  document.getElementsByClassName('css-xxe6ha')[5]?.click();
+
+        setTimeout(function() {
+            var actionTaken = document.getElementById("actionTaken");
+            var remarks = document.querySelector("#remarks");
+            if (!actionTaken && remarks) {
+                showError("Framework updates may have caused temporary downtime in the tampermonkey script for auto-filling output form. Please reach out to kavyshkr@ or bhimes@ for resolution. Until this is resolved, you may manually update the output form and submit the task.");
+                return;
+            }
+            var event = new Event("mousedown", { bubbles: true });
+            actionTaken.dispatchEvent(event);
+
+            var optionsListId = actionTaken.getAttribute("aria-controls");
+            var optionsList = document.getElementById(optionsListId);
+            var options = optionsList.querySelectorAll('[role="option"]');
+            if (options.length >= 2) {
+                options[3].click();
+
+                var granularity = document.getElementById("granularity");
+
+                var granularityEvent = new Event("mousedown", { bubbles: true });
+                granularity.dispatchEvent(granularityEvent);
+
+                var granularityOptionsListId = granularity.getAttribute("aria-controls");
+                var granularityOptionsList = document.getElementById(granularityOptionsListId);
+                var granularityOptions = granularityOptionsList.querySelectorAll('[role="option"]');
+                if (granularityOptions.length >= 2) {
+                    granularityOptions[5].click();
+
+                    var sourceReason = document.getElementById("source");
+
+                    var sourceEvent = new Event("mousedown", { bubbles: true });
+                    sourceReason.dispatchEvent(sourceEvent);
+
+                    var sourceOptionsListId = sourceReason.getAttribute("aria-controls");
+                    var sourceOptionsList = document.getElementById(sourceOptionsListId);
+                    var sourceOptions = sourceOptionsList.querySelectorAll('[role="option"]');
+                    if (sourceOptions.length >= 2) {
+                        sourceOptions[0].click();
+                    }
+                }
+            }
+        }, 100);
+    });
+
+    radButton1.addEventListener('mouseover', function() {
+        this.style.backgroundColor = '#777777';
+        this.style.borderColor = '#777777';
+    });
+
+    radButton1.addEventListener('mouseout', function() {
+        this.style.backgroundColor = '#CCCCCC';
+        this.style.borderColor = '#CCCCCC';
+    });
+
+    radButton1.addEventListener('mousedown', function() {
+        this.style.backgroundColor = '#444444';
+        this.style.borderColor = '#444444';
+    });
+
+    radButton1.addEventListener('mouseup', function() {
+        this.style.backgroundColor = '#777777';
+        this.style.borderColor = '#777777';
+    });
+
+    var radBody = document.getElementsByTagName('body')[0];
+    radBody.appendChild(radButton1);
+
+
+    var radButton2 = document.createElement("button");
+    radButton2.innerHTML = "NA";
+    radButton2.setAttribute('style', 'position: absolute; z-index: 2500; padding: 2px; left: 97%; top:43%; background-color: #CCCCCC; color: #000000; border: 4px solid #CCCCCC; border-radius: 8px; font-size: 14px; font-family: "Amazon Ember"; font-weight: bold; transition: background-color 0.3s, border-color 0.3s;');
+
+    radButton2.addEventListener('click', function() {
+        document.getElementsByClassName('css-xxe6ha')[5]?.click();
+
+        setTimeout(function() {
+            var actionTaken = document.getElementById("actionTaken");
+            var remarks = document.querySelector("#remarks");
+            if (!actionTaken && remarks) {
+                showError("Framework updates may have caused temporary downtime in the tampermonkey script for auto-filling output form. Please reach out to kavyshkr@ or bhimes@ for resolution. Until this is resolved, you may manually update the output form and submit the task.");
+                return;
+            }
+            var event = new Event("mousedown", { bubbles: true });
+            actionTaken.dispatchEvent(event);
+
+            var optionsListId = actionTaken.getAttribute("aria-controls");
+            var optionsList = document.getElementById(optionsListId);
+            var options = optionsList.querySelectorAll('[role="option"]');
+            if (options.length >= 2) {
+                options[0].click();
+
+                setTimeout(function() {
+                    var granularityReason = document.getElementById("granularity");
+
+                    var granularityEvent = new Event("mousedown", { bubbles: true });
+                    granularityReason.dispatchEvent(granularityEvent);
+
+                    var granularityOptionsListId = granularityReason.getAttribute("aria-controls");
+                    var granularityOptionsList = document.getElementById(granularityOptionsListId);
+                    var granularityOptions = granularityOptionsList.querySelectorAll('[role="option"]');
+                    if (granularityOptions.length >= 4) {
+                        granularityOptions[0].click();
+
+                        var sourceReason = document.getElementById("source");
+
+                        var sourceEvent = new Event("mousedown", { bubbles: true });
+                        sourceReason.dispatchEvent(sourceEvent);
+
+                        var sourceOptionsListId = sourceReason.getAttribute("aria-controls");
+                        var sourceOptionsList = document.getElementById(sourceOptionsListId);
+                        var sourceOptions = sourceOptionsList.querySelectorAll('[role="option"]');
+                        if (sourceOptions.length >= 6) {
+                            sourceOptions[0].click();
+
+                            var addressClassification = document.getElementById("addressClassification");
+
+                            var addressClassificationEvent = new Event("mousedown", { bubbles: true });
+                            addressClassification.dispatchEvent(addressClassificationEvent);
+
+                            var addressClassificationOptionsListId = addressClassification.getAttribute("aria-controls");
+                            var addressClassificationOptionsList = document.getElementById(addressClassificationOptionsListId);
+                            var addressClassificationOptions = addressClassificationOptionsList.querySelectorAll('[role="option"]');
+                            if (addressClassificationOptions.length >= 3) {
+                                addressClassificationOptions[0].click();
+                            }
+                        }
+                    }
+                }, 100);
+            }
+        });
+    });
+
+    radButton2.addEventListener('mouseover', function() {
+        this.style.backgroundColor = '#777777';
+        this.style.borderColor = '#777777';
+    });
+
+    radButton2.addEventListener('mouseout', function() {
+        this.style.backgroundColor = '#CCCCCC';
+        this.style.borderColor = '#CCCCCC';
+    });
+
+    radButton2.addEventListener('mousedown', function() {
+        this.style.backgroundColor = '#444444';
+        this.style.borderColor = '#444444';
+    });
+
+    radButton2.addEventListener('mouseup', function() {
+        this.style.backgroundColor = '#777777';
+        this.style.borderColor = '#777777';
+    });
+
+    radBody.appendChild(radButton2);
+
+
+    var radButton3 = document.createElement("button");
+    radButton3.innerHTML = "NAK";
+    radButton3.setAttribute('style', 'position: absolute; z-index: 2500; padding: 2px; left: 97%; top:36%; background-color: #CCCCCC; color: #000000; border: 4px solid #CCCCCC; border-radius: 8px; font-size: 14px; font-family: "Amazon Ember"; font-weight: bold; transition: background-color 0.3s, border-color 0.3s;');
+
+    radButton3.addEventListener('click', function() {
+        document.getElementsByClassName('css-xxe6ha')[5]?.click();
+
+        setTimeout(function() {
+            var actionTaken = document.getElementById("actionTaken");
+            var remarks = document.querySelector("#remarks");
+            if (!actionTaken && remarks) {
+                showError("Framework updates may have caused temporary downtime in the tampermonkey script for auto-filling output form. Please reach out to kavyshkr@ or bhimes@ for resolution. Until this is resolved, you may manually update the output form and submit the task.");
+                return;
+            }
+            var event = new Event("mousedown", { bubbles: true });
+            actionTaken.dispatchEvent(event);
+
+            var optionsListId = actionTaken.getAttribute("aria-controls");
+            var optionsList = document.getElementById(optionsListId);
+            var options = optionsList.querySelectorAll('[role="option"]');
+            if (options.length >= 2) {
+                options[4].click();
+
+                setTimeout(function() {
+                    var granularityReason = document.getElementById("granularity");
+
+                    var granularityEvent = new Event("mousedown", { bubbles: true });
+                    granularityReason.dispatchEvent(granularityEvent);
+
+                    var granularityOptionsListId = granularityReason.getAttribute("aria-controls");
+                    var granularityOptionsList = document.getElementById(granularityOptionsListId);
+                    var granularityOptions = granularityOptionsList.querySelectorAll('[role="option"]');
+                    if (granularityOptions.length >= 4) {
+                        granularityOptions[0].click();
+
+                        var sourceReason = document.getElementById("source");
+
+                        var sourceEvent = new Event("mousedown", { bubbles: true });
+                        sourceReason.dispatchEvent(sourceEvent);
+
+                        var sourceOptionsListId = sourceReason.getAttribute("aria-controls");
+                        var sourceOptionsList = document.getElementById(sourceOptionsListId);
+                        var sourceOptions = sourceOptionsList.querySelectorAll('[role="option"]');
+                        if (sourceOptions.length >= 6) {
+                            sourceOptions[0].click();
+
+                            var addressClassification = document.getElementById("addressClassification");
+
+                            var addressClassificationEvent = new Event("mousedown", { bubbles: true });
+                            addressClassification.dispatchEvent(addressClassificationEvent);
+
+                            var addressClassificationOptionsListId = addressClassification.getAttribute("aria-controls");
+                            var addressClassificationOptionsList = document.getElementById(addressClassificationOptionsListId);
+                            var addressClassificationOptions = addressClassificationOptionsList.querySelectorAll('[role="option"]');
+                            if (addressClassificationOptions.length >= 3) {
+                                addressClassificationOptions[0].click();
+                            }
+                        }
+                    }
+                }, 100);
+            }
+        });
+    });
+
+    radButton3.addEventListener('mouseover', function() {
+        this.style.backgroundColor = '#777777';
+        this.style.borderColor = '#777777';
+    });
+
+    radButton3.addEventListener('mouseout', function() {
+        this.style.backgroundColor = '#CCCCCC';
+        this.style.borderColor = '#CCCCCC';
+    });
+
+    radButton3.addEventListener('mousedown', function() {
+        this.style.backgroundColor = '#444444';
+        this.style.borderColor = '#444444';
+    });
+
+    radButton3.addEventListener('mouseup', function() {
+        this.style.backgroundColor = '#777777';
+        this.style.borderColor = '#777777';
+    });
+
+    radBody.appendChild(radButton3);
+    function showError(errorMessage) {
+        var errorDiv = document.createElement("div");
+        errorDiv.innerHTML = errorMessage;
+        errorDiv.style.color = "red";
+        errorDiv.style.position = "absolute";
+        errorDiv.style.top = "50%";
+        errorDiv.style.left = "50%";
+        errorDiv.style.transform = "translate(-50%, -50%)";
+        errorDiv.style.zIndex = "9999";
+        errorDiv.style.backgroundColor = "#FFFFFF";
+        errorDiv.style.padding = "10px";
+        errorDiv.style.border = "1px solid #CCCCCC";
+        errorDiv.style.borderRadius = "4px";
+        errorDiv.style.fontSize = "16px";
+        errorDiv.style.fontFamily = "Arial";
+        radBody.appendChild(errorDiv);
+
+        setTimeout(() => {
+            errorDiv.style.opacity = 0;
+            setTimeout(() => {
+                radBody.removeChild(errorDiv);
+            }, 500);
+        }, 15000);
+    }
+})();
